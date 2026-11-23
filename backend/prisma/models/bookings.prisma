@@ -1,0 +1,82 @@
+model Booking {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reference String @unique
+  facilityId String @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  requesterId String @db.Uuid
+  requester User @relation("RequestedBookings", fields: [requesterId], references: [id])
+  responsibleUserId String @db.Uuid
+  responsibleUser User @relation("ResponsibleBookings", fields: [responsibleUserId], references: [id])
+  createdById String @db.Uuid
+  createdBy User @relation("CreatedBookings", fields: [createdById], references: [id])
+  purpose String
+  startAt DateTime
+  endAt DateTime
+  status String @default("PENDING")
+  confirmationSource String?
+  confirmedAt DateTime?
+  cancellationReason String?
+  cancelledById String? @db.Uuid
+  cancelledAt DateTime?
+  noShowReason String?
+  noShowById String? @db.Uuid
+  noShowAt DateTime?
+  expiredAt DateTime?
+  policySnapshot Json
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  meeting MeetingBookingDetail?
+  trip VehicleBookingDetail?
+  approval BookingApproval?
+  usage UsageSession?
+  claim ResourceTimeClaim?
+  @@index([responsibleUserId, startAt])
+  @@index([status, startAt])
+  @@index([facilityId, startAt])
+}
+
+model MeetingBookingDetail {
+  bookingId String @id @db.Uuid
+  booking Booking @relation(fields: [bookingId], references: [id])
+  title String
+  attendees Int
+}
+
+model VehicleBookingDetail {
+  bookingId String @id @db.Uuid
+  booking Booking @relation(fields: [bookingId], references: [id])
+  destination String
+  travelPurpose String
+  designatedDriverId String @db.Uuid
+}
+
+model BookingApproval {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId String @unique @db.Uuid
+  booking Booking @relation(fields: [bookingId], references: [id])
+  approverId String @db.Uuid
+  decision String
+  reason String?
+  adminException Boolean @default(false)
+  exceptionReason String?
+  decidedAt DateTime @default(now())
+}
+
+model ResourceTimeClaim {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facilityId String @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  bookingId String? @unique @db.Uuid
+  booking Booking? @relation(fields: [bookingId], references: [id])
+  maintenanceId String? @unique @db.Uuid
+  maintenance Maintenance? @relation(fields: [maintenanceId], references: [id])
+  startAt DateTime
+  endAt DateTime
+  state String @default("ACTIVE")
+  bufferMinutes Int @default(0)
+  releasedAt DateTime?
+  releaseReason String?
+  createdAt DateTime @default(now())
+  @@index([facilityId, state])
+}

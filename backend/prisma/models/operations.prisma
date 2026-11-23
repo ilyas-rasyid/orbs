@@ -1,0 +1,70 @@
+model UsageSession {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId String @unique @db.Uuid
+  booking Booking @relation(fields: [bookingId], references: [id])
+  facilityId String @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  actualUserId String @db.Uuid
+  startedById String @db.Uuid
+  endedById String? @db.Uuid
+  startAt DateTime @default(now())
+  endAt DateTime?
+  state String @default("ACTIVE")
+  startNotes String @default("")
+  endNotes String @default("")
+  version Int @default(1)
+  vehicle VehicleUsageDetail?
+  equipment EquipmentUsageDetail?
+  @@index([facilityId, state])
+}
+
+model VehicleUsageDetail {
+  usageId String @id @db.Uuid
+  usage UsageSession @relation(fields: [usageId], references: [id])
+  actualDriverId String @db.Uuid
+  handoverOfficerId String @db.Uuid
+  startOdometer Int
+  endOdometer Int?
+  startCondition String
+  endCondition String?
+  fuelStart String?
+  fuelEnd String?
+  returnOfficerId String? @db.Uuid
+  damageNotes String?
+  distance Int?
+}
+
+model EquipmentUsageDetail {
+  usageId String @id @db.Uuid
+  usage UsageSession @relation(fields: [usageId], references: [id])
+  handoverOfficerId String @db.Uuid
+  startCondition String
+  endCondition String?
+  returnOfficerId String? @db.Uuid
+  damageNotes String?
+}
+
+model Maintenance {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reference String @unique
+  facilityId String @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  reason String
+  notes String @default("")
+  startAt DateTime
+  endAt DateTime
+  status String @default("SCHEDULED")
+  createdById String @db.Uuid
+  startedById String? @db.Uuid
+  completedById String? @db.Uuid
+  cancelledById String? @db.Uuid
+  cancellationReason String?
+  actualStartAt DateTime?
+  actualEndAt DateTime?
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  claim ResourceTimeClaim?
+  @@index([facilityId, startAt])
+  @@index([status, startAt])
+}

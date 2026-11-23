@@ -1,0 +1,83 @@
+name: orbs-production
+services:
+  postgres:
+    image: postgres:17.7-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Required}
+      POSTGRES_DB: ${POSTGRES_DB:?Required}
+    volumes:
+      - orbs_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [private]
+  migrate:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backend
+    command: ["bunx", "prisma", "migrate", "deploy"]
+    working_dir: /app/backend
+    restart: "no"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:?Provide a URL-encoded PostgreSQL connection string}
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [private]
+  api:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      LOG_LEVEL: info
+      DATABASE_URL: ${DATABASE_URL:?Provide a PostgreSQL connection string}
+      ORBS_PUBLIC_ORIGIN: ${ORBS_PUBLIC_ORIGIN:?Required}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    networks: [private]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "bun",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  worker:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.backend
+    command: ["bun", "backend/src/worker/index.ts"]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      LOG_LEVEL: info
+      DATABASE_URL: ${DATABASE_URL:?Provide a PostgreSQL connection string}
+      ORBS_PUBLIC_ORIGIN: ${ORBS_PUBLIC_ORIGIN:?Required}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    networks: [private]
+  web:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.web
+    ports:
+      - "127.0.0.1:${ORBS_WEB_PORT:-8080}:80"
+    restart: unless-stopped
+    depends_on: [api]
+    networks: [private]
+networks:
+  private:
+volumes:
+  orbs_db:

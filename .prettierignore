@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+.bun/
+.git/
+*.tsbuildinfo
+**/routeTree.gen.ts
+backend/src/generated/
+*.lock

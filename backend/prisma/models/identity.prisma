@@ -1,0 +1,36 @@
+model User {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  employeeCode String @unique
+  name String
+  email String @unique
+  passwordHash String
+  departmentId String? @db.Uuid
+  department Department? @relation(fields: [departmentId], references: [id])
+  role String @default("EMPLOYEE")
+  status String @default("ACTIVE")
+  mustChangePassword Boolean @default(false)
+  version Int @default(1)
+  deactivatedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  sessions AuthSession[]
+  requestedBookings Booking[] @relation("RequestedBookings")
+  responsibleBookings Booking[] @relation("ResponsibleBookings")
+  createdBookings Booking[] @relation("CreatedBookings")
+  notifications Notification[]
+  idempotencies IdempotencyRecord[]
+}
+
+model AuthSession {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields: [userId], references: [id])
+  tokenHash String @unique
+  csrfHash String
+  createdAt DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+  device String @default("")
+  @@index([userId, revokedAt])
+}

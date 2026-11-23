@@ -1,0 +1,29 @@
+model OrganizationSetting {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @default("Northstar Office")
+  timezone String @default("Asia/Makassar")
+  bookingIntervalMinutes Int @default(15)
+  leadMinutes Int @default(15)
+  horizonDays Int @default(90)
+  noShowMinutes Int @default(30)
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Department {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code String @unique
+  name String
+  active Boolean @default(true)
+  users User[]
+}
+
+model OfficeLocation {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code String @unique
+  name String
+  address String @default("")
+  active Boolean @default(true)
+  facilities Facility[]
+}

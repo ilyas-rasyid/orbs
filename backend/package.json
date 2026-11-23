@@ -1,0 +1,35 @@
+{
+  "name": "@orbs/backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun dist/index.js",
+    "build": "bun build src/index.ts --target=bun --packages=external --outdir dist",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test tests/unit tests/api",
+    "test:integration": "NODE_ENV=test bun test tests/integration",
+    "test:concurrency": "NODE_ENV=test bun test tests/integration/concurrency.test.ts",
+    "db:check": "bun src/infrastructure/database/check.ts",
+    "prisma:validate": "prisma validate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "bun run prisma/seed.ts",
+    "worker": "bun src/worker/index.ts",
+    "admin:provision": "bun scripts/provision-admin.ts"
+  },
+  "dependencies": {
+    "elysia": "1.4.29",
+    "pg": "8.23.0",
+    "zod": "4.6.5",
+    "dotenv": "17.4.2",
+    "@prisma/client": "7.10.0",
+    "@prisma/adapter-pg": "7.10.0"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "@types/pg": "8.23.1",
+    "prisma": "7.10.0"
+  }
+}

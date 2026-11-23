@@ -1,0 +1,51 @@
+{
+  "name": "office-resource-booking-system",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "bun run --parallel --filter '@orbs/*' dev",
+    "dev:frontend": "bun run --filter @orbs/frontend dev",
+    "dev:backend": "bun run --filter @orbs/backend dev",
+    "build": "bun run --sequential --filter '@orbs/*' build",
+    "build:frontend": "bun run --filter @orbs/frontend build",
+    "build:backend": "bun run --filter @orbs/backend build",
+    "typecheck": "bun run --sequential --filter '@orbs/*' typecheck",
+    "lint": "oxlint --deny-warnings frontend/src backend/src backend/tests frontend/tests scripts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "audit:files": "node scripts/audit-file-length.mjs",
+    "audit:boundaries": "node scripts/audit-import-boundaries.mjs",
+    "audit:cycles": "node scripts/audit-circular-dependencies.mjs",
+    "audit:workspaces": "node scripts/audit-workspace-boundaries.mjs",
+    "audit:architecture": "bun run audit:files && bun run audit:types && bun run audit:boundaries && bun run audit:cycles && bun run audit:workspaces",
+    "test": "bun run --sequential --filter '@orbs/*' test && node --test scripts/tests/*.test.mjs",
+    "test:foundation": "bun run test && bun run db:check",
+    "db:up": "docker compose --env-file .env up -d --wait postgres",
+    "db:down": "docker compose --env-file .env down",
+    "db:check": "bun run --filter @orbs/backend db:check",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run audit:architecture && bun run test && bun run build",
+    "db:test:up": "docker compose --env-file .env --profile test up -d --wait postgres-test",
+    "test:integration": "bun run --filter @orbs/backend test:integration",
+    "test:concurrency": "bun run --filter @orbs/backend test:concurrency",
+    "audit:types": "node scripts/audit-unsafe-types.mjs",
+    "db:migrate": "bun run --filter @orbs/backend db:migrate",
+    "db:generate": "bun run --filter @orbs/backend db:generate",
+    "db:seed": "bun run --filter @orbs/backend db:seed",
+    "worker": "bun run --filter @orbs/backend worker",
+    "admin:provision": "bun run --filter @orbs/backend admin:provision",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "oxlint": "1.83.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "@playwright/test": "1.64.1"
+  }
+}

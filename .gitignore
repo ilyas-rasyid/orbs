@@ -1,0 +1,16 @@
+node_modules/
+**/dist/
+**/coverage/
+**/test-results/
+**/playwright-report/
+*.tsbuildinfo
+*.log
+.env
+.env.*
+!.env.example
+!**/.env.example
+backend/src/generated/
+.DS_Store
+.idea/
+.tmp/
+frontend/src/router/routeTree.gen.ts

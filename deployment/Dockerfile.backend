@@ -1,0 +1,19 @@
+FROM oven/bun:1.4.0 AS build
+WORKDIR /app
+COPY package.json bun.lock ./
+COPY frontend/package.json frontend/package.json
+COPY backend/package.json backend/package.json
+RUN bun install --frozen-lockfile
+COPY backend ./backend
+RUN cd backend && bunx prisma generate
+RUN bun run build:backend
+
+FROM oven/bun:1.4.0
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/backend ./backend
+COPY --from=build /app/package.json ./package.json
+USER bun
+EXPOSE 3001
+CMD ["bun", "backend/dist/index.js"]

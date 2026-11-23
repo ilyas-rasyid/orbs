@@ -1,0 +1,78 @@
+model FacilityCategory {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code String @unique
+  name String
+  active Boolean @default(true)
+  facilities Facility[]
+}
+
+model Facility {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code String @unique
+  name String
+  description String @default("")
+  categoryId String @db.Uuid
+  category FacilityCategory @relation(fields: [categoryId], references: [id])
+  locationId String @db.Uuid
+  location OfficeLocation @relation(fields: [locationId], references: [id])
+  status String @default("ACTIVE")
+  approvalPolicy String @default("REQUIRE_APPROVAL")
+  minMinutes Int @default(30)
+  maxMinutes Int @default(480)
+  leadMinutes Int @default(15)
+  bufferMinutes Int @default(0)
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  room MeetingRoomProfile?
+  vehicle VehicleProfile?
+  equipment EquipmentProfile?
+  windows FacilityOperatingWindow[]
+  bookings Booking[]
+  claims ResourceTimeClaim[]
+  usages UsageSession[]
+  maintenances Maintenance[]
+  @@index([categoryId, locationId, status])
+}
+
+model FacilityOperatingWindow {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  facilityId String @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  dayOfWeek Int
+  opens String
+  closes String
+  kind String @default("BOOKING")
+  active Boolean @default(true)
+  @@index([facilityId, dayOfWeek])
+}
+
+model MeetingRoomProfile {
+  facilityId String @id @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  floor String @default("")
+  capacity Int
+  amenities String[] @default([])
+}
+
+model VehicleProfile {
+  facilityId String @id @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  plateNumber String @unique
+  brand String @default("")
+  model String @default("")
+  vehicleType String @default("CAR")
+  passengerCapacity Int @default(4)
+  currentOdometer Int @default(0)
+  currentCondition String @default("GOOD")
+}
+
+model EquipmentProfile {
+  facilityId String @id @db.Uuid
+  facility Facility @relation(fields: [facilityId], references: [id])
+  assetCode String @unique
+  brand String @default("")
+  model String @default("")
+  serialNumber String? @unique
+  currentCondition String @default("GOOD")
+}
