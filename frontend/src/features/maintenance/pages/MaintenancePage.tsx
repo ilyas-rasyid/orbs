@@ -4,6 +4,7 @@ import { Plus, Wrench } from "lucide-react";
 import { api } from "../../../shared/api/client";
 import {
   ActionError,
+  DateTimeInput,
   Empty,
   Field,
   FormActions,
@@ -129,19 +130,17 @@ export function MaintenancePage() {
                 />
               </Field>
               <Field label="Start">
-                <input
-                  type="datetime-local"
+                <DateTimeInput
                   required
                   value={start}
-                  onChange={(e) => setStart(e.target.value)}
+                  onChange={setStart}
                 />
               </Field>
               <Field label="End">
-                <input
-                  type="datetime-local"
+                <DateTimeInput
                   required
                   value={end}
-                  onChange={(e) => setEnd(e.target.value)}
+                  onChange={setEnd}
                 />
               </Field>
               <Field label="Notes">

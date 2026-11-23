@@ -4,7 +4,6 @@
   background: var(--surface);
   box-shadow: var(--shadow);
   min-width: 0;
-  overflow: hidden;
 }
 .panel + .panel {
   margin-top: 20px;

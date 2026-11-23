@@ -8,6 +8,7 @@ import { api } from "../../../shared/api/client";
 import { useAuth } from "../../../shared/auth/AuthProvider";
 import {
   ActionError,
+  DateTimeInput,
   Field,
   FormActions,
   Loading,
@@ -190,18 +191,20 @@ export function CreateBookingPage() {
                 </div>
               </Field>
               <Field label="Start (local time)">
-                <input
-                  type="datetime-local"
-                  step="900"
-                  {...form.register("startAt")}
+                <DateTimeInput
+                  value={form.watch("startAt")}
+                  onChange={(value) =>
+                    form.setValue("startAt", value, { shouldDirty: true, shouldValidate: true })
+                  }
                   required
                 />
               </Field>
               <Field label="End (local time)">
-                <input
-                  type="datetime-local"
-                  step="900"
-                  {...form.register("endAt")}
+                <DateTimeInput
+                  value={form.watch("endAt")}
+                  onChange={(value) =>
+                    form.setValue("endAt", value, { shouldDirty: true, shouldValidate: true })
+                  }
                   required
                 />
               </Field>

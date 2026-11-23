@@ -4,6 +4,7 @@ import { Download } from "lucide-react";
 import { api } from "../../../shared/api/client";
 import {
   ActionError,
+  DateInput,
   Empty,
   Field,
   Loading,
@@ -82,17 +83,15 @@ export function ReportsPage() {
           </select>
         </Field>
         <Field label="From">
-          <input
-            type="date"
+          <DateInput
             value={from}
-            onChange={(e) => setFrom(e.target.value)}
+            onChange={setFrom}
           />
         </Field>
         <Field label="To">
-          <input
-            type="date"
+          <DateInput
             value={to}
-            onChange={(e) => setTo(e.target.value)}
+            onChange={setTo}
           />
         </Field>
       </div>

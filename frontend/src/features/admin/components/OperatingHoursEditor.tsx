@@ -9,6 +9,7 @@ import {
   Loading,
   Panel,
   SuccessNotice,
+  TimeInput,
 } from "../../../shared/components/ui";
 import type { Facility } from "../../../shared/types/domain";
 
@@ -138,23 +139,21 @@ export function OperatingHoursEditor({ facility }: { facility: Facility }) {
                 </select>
               </Field>
               <Field label="From">
-                <input
-                  type="time"
+                <TimeInput
                   value={window.opens}
-                  onChange={(event) =>
+                  onChange={(value) =>
                     changeWindow(index, {
-                      opens: event.target.value,
+                      opens: value,
                     })
                   }
                 />
               </Field>
               <Field label="To">
-                <input
-                  type="time"
+                <TimeInput
                   value={window.closes}
-                  onChange={(event) =>
+                  onChange={(value) =>
                     changeWindow(index, {
-                      closes: event.target.value,
+                      closes: value,
                     })
                   }
                 />

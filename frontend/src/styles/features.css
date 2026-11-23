@@ -476,3 +476,278 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Custom Shared DateTime, Date, and Time Picker */
+.dt-picker {
+  position: relative;
+  width: 100%;
+}
+.dt-hidden-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.dt-trigger-bar {
+  width: 100%;
+}
+.dt-trigger-btn {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  transition:
+    border-color 0.14s,
+    box-shadow 0.14s;
+}
+.dt-trigger-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+.dt-picker.is-open .dt-trigger-btn,
+.dt-trigger-btn:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
+  outline: none;
+}
+.dt-trigger-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 620;
+}
+.dt-trigger-date svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.dt-trigger-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.dt-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+  padding: 14px;
+  min-width: 390px;
+}
+.dt-popover-date-only {
+  min-width: 265px;
+}
+.dt-popover-layout {
+  display: grid;
+  grid-template-columns: 236px 126px;
+  gap: 14px;
+}
+.dt-calendar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dt-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.dt-cal-title {
+  font-size: 12px;
+  font-weight: 720;
+}
+.dt-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  display: inline-grid;
+  place-items: center;
+}
+.dt-nav-btn:hover {
+  background: var(--surface-subtle);
+  border-color: var(--primary);
+}
+.dt-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.dt-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+.dt-day-btn {
+  height: 31px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 560;
+  display: inline-grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.dt-day-btn:hover {
+  background: var(--surface-subtle);
+}
+.dt-day-btn.outside {
+  color: var(--muted);
+  opacity: 0.45;
+}
+.dt-day-btn.today {
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 720;
+}
+.dt-day-btn.selected {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  font-weight: 720;
+}
+.dt-cal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.dt-quick-btn {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 680;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+.dt-quick-btn:hover {
+  background: var(--primary-soft);
+}
+.dt-done-btn {
+  border: 0;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 680;
+  padding: 5px 11px;
+  border-radius: 6px;
+}
+.dt-time-section {
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dt-time-header {
+  font-size: 10px;
+  font-weight: 730;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.dt-time-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.dt-hour-list {
+  max-height: 215px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 3px;
+}
+.dt-minute-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dt-time-chip {
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 640;
+  font-variant-numeric: tabular-nums;
+}
+.dt-time-chip:hover {
+  background: var(--surface-subtle);
+  border-color: var(--primary);
+}
+.dt-time-chip.selected {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+.dt-time-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.dt-time-select-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--primary);
+  pointer-events: none;
+}
+.dt-time-select {
+  padding-left: 30px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 620;
+}
+@media (max-width: 520px) {
+  .dt-popover {
+    min-width: 270px;
+    right: 0;
+  }
+  .dt-popover-layout {
+    grid-template-columns: 1fr;
+  }
+  .dt-time-section {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding-left: 0;
+    padding-top: 10px;
+  }
+  .dt-hour-list {
+    max-height: 120px;
+  }
+}
