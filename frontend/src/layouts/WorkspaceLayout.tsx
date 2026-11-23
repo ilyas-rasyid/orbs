@@ -1,4 +1,4 @@
-import { Outlet, Navigate } from "@tanstack/react-router";
+import { Outlet, Navigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../shared/auth/AuthProvider";
 import { Loading } from "../shared/components/ui";
@@ -37,14 +37,20 @@ const links = [
 ];
 export function WorkspaceLayout() {
   const { user, loading, logout } = useAuth();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(() => localStorage.getItem("orbs-theme") === "dark");
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.documentElement.style.backgroundColor = dark ? "#0e1522" : "#f7f9fc";
+    document.documentElement.style.colorScheme = dark ? "dark" : "light";
   }, [dark]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
   if (loading) return <Loading label="Memeriksa sesi…" />;
   if (!user) return <Navigate to="/" />;
-  if (user.mustChangePassword && window.location.pathname !== "/profile") {
+  if (user.mustChangePassword && pathname !== "/profile") {
     return <Navigate to="/profile" />;
   }
   const nav = links.filter(
@@ -82,9 +88,7 @@ export function WorkspaceLayout() {
         >
           {nav.map((item) => {
             const Icon = item.icon;
-            const active =
-              window.location.pathname === item.href ||
-              window.location.pathname.startsWith(`${item.href}/`);
+            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <a
                 key={item.href}
@@ -159,7 +163,7 @@ export function WorkspaceLayout() {
               <a
                 key={item.href}
                 href={item.href}
-                className={window.location.pathname === item.href ? "active" : ""}
+                className={pathname === item.href ? "active" : ""}
               >
                 <Icon size={19} />
                 <span>

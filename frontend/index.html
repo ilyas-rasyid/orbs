@@ -14,7 +14,18 @@
       name="description"
       content="ORBS — Office Resource Booking System"
     />
-    <title>ORBS · Foundation</title>
+    <title>ORBS · Office Resource Booking System</title>
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem("orbs-theme");
+          var isDark = theme === "dark";
+          document.documentElement.dataset.theme = isDark ? "dark" : "light";
+          document.documentElement.style.backgroundColor = isDark ? "#0e1522" : "#f7f9fc";
+          document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
