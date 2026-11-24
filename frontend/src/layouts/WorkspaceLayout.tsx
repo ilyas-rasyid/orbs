@@ -44,7 +44,7 @@ export function WorkspaceLayout() {
   const [dark, setDark] = useState(() => localStorage.getItem("orbs-theme") === "dark");
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
-    document.documentElement.style.backgroundColor = dark ? "#0d1715" : "#f7faf9";
+    document.documentElement.style.backgroundColor = dark ? "#090d11" : "#f8fafc";
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
   }, [dark]);
   useEffect(() => {
