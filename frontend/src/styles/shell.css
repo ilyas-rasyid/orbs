@@ -61,6 +61,33 @@
   flex-direction: column;
   gap: 4px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-faint) transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+.sidebar:hover .side-nav,
+.side-nav:hover {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+.side-nav::-webkit-scrollbar {
+  width: 5px;
+}
+.side-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.side-nav::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-faint);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+.sidebar:hover .side-nav::-webkit-scrollbar-thumb,
+.side-nav:hover::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+}
+.side-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
 .nav-link {
   display: flex;

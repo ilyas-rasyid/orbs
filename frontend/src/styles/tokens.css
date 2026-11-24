@@ -23,6 +23,12 @@
   --danger-soft: #fff1ef;
   --shadow: 0 3px 14px rgba(29, 44, 71, 0.03);
   color-scheme: light;
+
+  /* Modern Scrollbar - Light */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+  --scrollbar-thumb-faint: rgba(203, 213, 225, 0.45);
 }
 :root[data-theme="dark"] {
   --background: #0e1522;
@@ -42,9 +48,17 @@
   --danger-soft: #4b292e;
   --shadow: none;
   color-scheme: dark;
+
+  /* Modern Scrollbar - Dark */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #334155;
+  --scrollbar-thumb-hover: #475569;
+  --scrollbar-thumb-faint: rgba(51, 65, 85, 0.45);
 }
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 html {
   scroll-behavior: smooth;
@@ -82,11 +96,27 @@ button:disabled {
 ::selection {
   background: var(--primary-soft);
 }
+/* Modern non-intrusive scrollbar across WebKit / Blink browsers */
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 8px;
+  background: var(--scrollbar-thumb);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Eliminate dated OS up/down arrow buttons */
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
