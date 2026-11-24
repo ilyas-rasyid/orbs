@@ -26,7 +26,7 @@ export function ReportsPage() {
     <>
       <PageHeader
         title="Reports"
-        description="Analisis data pemesanan dan penggunaan aktual dengan rentang tanggal yang jelas."
+        description="Analyze booking trends and actual utilization across clear date ranges."
         action={
           <button
             className="button secondary"
@@ -92,7 +92,7 @@ export function ReportsPage() {
         ) : result.isError ? (
           <ActionError error={result.error} />
         ) : result.data.rows.length === 0 ? (
-          <Empty title="Tidak ada data pada periode terpilih" />
+          <Empty title="No records found for the selected period" />
         ) : (
           <div className="table-scroll">
             <table className="data-table">
@@ -116,7 +116,7 @@ export function ReportsPage() {
           </div>
         )}
         {result.data && result.data.rows.length > 100 && (
-          <p className="hint">100 baris pertama ditampilkan. Export CSV untuk data lainnya.</p>
+          <p className="hint">First 100 rows displayed. Export CSV for complete records.</p>
         )}
       </Panel>
     </>

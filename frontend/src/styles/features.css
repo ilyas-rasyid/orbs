@@ -36,8 +36,25 @@
 .dashboard-columns {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
-  align-items: start;
+  align-items: stretch;
   gap: 20px;
+}
+.dashboard-columns > .panel {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-columns > .panel > .panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-columns .empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
 }
 .compact-list {
   display: flex;

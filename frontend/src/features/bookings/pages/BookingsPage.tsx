@@ -33,7 +33,7 @@ export function BookingsPage() {
     <>
       <PageHeader
         title="My Bookings"
-        description="Kelola permintaan dan penggunaan fasilitas yang menjadi tanggung jawabmu."
+        description="Manage facility requests and reservations under your responsibility."
         action={
           <a
             className="button primary"
@@ -66,8 +66,8 @@ export function BookingsPage() {
           <ErrorNotice error={query.error} />
         ) : query.data.data.length === 0 ? (
           <Empty
-            title="Belum ada booking"
-            description="Buat booking baru untuk mulai menggunakan fasilitas."
+            title="No bookings yet"
+            description="Create a new booking to start using facilities."
           />
         ) : (
           <div className="table-scroll">

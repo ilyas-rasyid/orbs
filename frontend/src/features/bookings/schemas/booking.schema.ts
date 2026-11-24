@@ -2,10 +2,10 @@ import { z } from "zod";
 import { localDatetime } from "../../../shared/utils/dates";
 
 export const formSchema = z.object({
-  facilityId: z.string().min(1, "Pilih fasilitas"),
+  facilityId: z.string().min(1, "Select a facility"),
   startAt: z.string().min(1),
   endAt: z.string().min(1),
-  purpose: z.string().trim().min(3, "Isi tujuan minimal 3 karakter"),
+  purpose: z.string().trim().min(3, "Purpose must be at least 3 characters"),
   responsibleUserId: z.string().optional(),
   meetingTitle: z.string().optional(),
   attendees: z.number().int().min(1).optional(),

@@ -140,7 +140,7 @@ export function CalendarPage() {
         {calendar.data && calendar.data.claims.length === 0 && (
           <Empty
             title="No blocking reservations"
-            description="Slot yang belum diblokir tetap diverifikasi kembali saat booking."
+            description="Unblocked slots are re-verified for scheduling conflicts upon booking submission."
           />
         )}
       </Panel>

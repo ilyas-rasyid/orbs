@@ -26,7 +26,7 @@ export function FacilitiesPage() {
     <>
       <PageHeader
         title="Facilities"
-        description="Temukan ruang meeting, kendaraan, dan peralatan yang sesuai kebutuhanmu."
+        description="Find meeting rooms, vehicles, and equipment to suit your operational needs."
         action={
           user?.role === "ADMIN" ? (
             <a

@@ -21,7 +21,7 @@ export function AuditPage() {
     <>
       <PageHeader
         title="Audit logs"
-        description="Jejak perubahan penting pada fasilitas, pengguna dan reservasi. Semua catatan read-only."
+        description="Audit trail of critical changes to facilities, users, and reservations. All records are read-only."
       />
       <Panel>
         {query.isPending ? (

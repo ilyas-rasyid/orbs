@@ -40,7 +40,7 @@ export function MaintenancePage() {
     <>
       <PageHeader
         title="Maintenance"
-        description="Rencanakan perawatan tanpa berbenturan dengan booking yang telah terkonfirmasi."
+        description="Schedule facility maintenance without conflicting with confirmed reservations."
         action={
           <button
             className="button primary"

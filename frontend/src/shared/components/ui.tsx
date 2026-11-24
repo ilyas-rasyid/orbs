@@ -45,7 +45,7 @@ export function Loading({ label = "Memuat data…" }: { label?: string }) {
   );
 }
 export function Empty({
-  title = "Belum ada data",
+  title = "No data available",
   description,
 }: {
   title?: string;
@@ -60,7 +60,7 @@ export function Empty({
   );
 }
 export function ErrorNotice({ error }: { error: unknown }) {
-  const message = error instanceof Error ? error.message : "Terjadi kesalahan tidak diketahui.";
+  const message = error instanceof Error ? error.message : "An unexpected error occurred.";
   return (
     <div
       role="alert"
@@ -140,7 +140,7 @@ export function ActionError({ error }: { error: unknown }) {
       <ErrorNotice
         error={
           new Error(
-            "Data berubah saat kamu membuka halaman ini. Muat ulang untuk tindakan terbaru.",
+            "Data was modified by another session. Please reload the page to take action.",
           )
         }
       />

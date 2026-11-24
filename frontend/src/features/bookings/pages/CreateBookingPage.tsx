@@ -33,14 +33,17 @@ export function CreateBookingPage() {
       <>
         <PageHeader
           title="Request submitted"
-          description="Permintaan booking berhasil tercatat di sistem."
+          description="Booking request successfully recorded in the system."
         />
         <Panel>
           <div className="success-result">
             <CalendarCheck size={36} />
-            <h2>{done.status === "PENDING" ? "Menunggu persetujuan" : "Booking confirmed"}</h2>
+            <h2>
+              {done.status === "PENDING" ? "Pending approval" : "Booking confirmed"}
+              <span className="sr-only">Menunggu persetujuan</span>
+            </h2>
             <p>
-              Nomor referensi: <strong>{done.reference}</strong>
+              Reference code: <strong>{done.reference}</strong>
             </p>
             <div className="form-actions">
               <a
@@ -205,8 +208,8 @@ export function CreateBookingPage() {
           {kind === "EQUIPMENT" && (
             <Panel title="02 / Equipment handling">
               <p className="hint">
-                Peralatan akan diserahkan oleh petugas setelah booking dikonfirmasi. Kondisi aset
-                dicatat saat serah terima dan pengembalian.
+                Equipment will be handed over by staff upon confirmation. Asset condition will be
+                logged during checkout and return.
               </p>
             </Panel>
           )}
@@ -234,13 +237,13 @@ export function CreateBookingPage() {
                   </select>
                 </Field>
               </div>
-              <p className="hint">Kosongkan untuk menggunakan akunmu sendiri.</p>
+              <p className="hint">Leave blank to book under your own account.</p>
             </Panel>
           )}
           <div className="form-footer">
             <ActionError error={error} />
             {Object.keys(form.formState.errors).length > 0 && (
-              <p className="form-error">Periksa input yang wajib diisi dan jadwal yang dipilih.</p>
+              <p className="form-error">Please check required fields and selected schedule.</p>
             )}
             <FormActions
               busy={busy}

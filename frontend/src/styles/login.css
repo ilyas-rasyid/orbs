@@ -5,8 +5,8 @@
   background: var(--surface);
 }
 .login-aside {
-  background: #132b4c;
-  color: #f8fbff;
+  background: #112822;
+  color: #f4faf8;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,8 +22,8 @@
   letter-spacing: -0.055em;
 }
 .login-brand .brand-emblem {
-  background: #f5f8fd;
-  color: #1d4ed8;
+  background: #eef7f4;
+  color: #2f7a69;
 }
 .login-intro {
   max-width: 520px;
@@ -32,7 +32,7 @@
 .login-intro .eyebrow {
   font-size: 11px;
   letter-spacing: 0.2em;
-  color: #a3c5f5;
+  color: #78c5b3;
   font-weight: 700;
 }
 .login-intro h1 {
@@ -44,22 +44,22 @@
 }
 .login-intro p {
   max-width: 380px;
-  color: #c1cfe3;
+  color: #b5d8cf;
   font-size: 14px;
   line-height: 1.8;
 }
 .login-feature {
   margin-top: 55px;
   padding-top: 20px;
-  border-top: 1px solid #ffffff35;
-  color: #d9e7f8;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  color: #c7e6de;
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 12px;
 }
 .login-footer {
-  color: #a8bad2;
+  color: #83ada4;
   font-size: 11px;
   letter-spacing: 0.025em;
 }
@@ -105,7 +105,8 @@
   margin-top: 26px;
   width: 100%;
   min-height: 45px;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
 }
 .login-note {
   margin-top: 21px;

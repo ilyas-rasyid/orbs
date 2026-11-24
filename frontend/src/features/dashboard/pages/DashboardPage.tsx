@@ -21,6 +21,13 @@ import {
 import type { Booking } from "../../../shared/types/domain";
 import { displayRange } from "../../../shared/utils/dates";
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
 export function DashboardPage() {
   const { user } = useAuth();
   const stats = useQuery({
@@ -45,8 +52,8 @@ export function DashboardPage() {
   return (
     <>
       <PageHeader
-        title={`Good day, ${user?.name.split(" ")[0] ?? "there"}`}
-        description="Ringkasan aktivitas fasilitas perusahaan dan reservasi yang perlu kamu perhatikan."
+        title={`${getGreeting()}, ${user?.name.split(" ")[0] ?? "there"}`}
+        description="Overview of company facility activities and reservations requiring your attention."
         action={
           <a
             href="/bookings/new"
@@ -106,8 +113,8 @@ export function DashboardPage() {
             <ErrorNotice error={recent.error} />
           ) : recent.data.data.length === 0 ? (
             <Empty
-              title="Belum ada booking"
-              description="Pilih fasilitas untuk mulai memesan."
+              title="No bookings yet"
+              description="Select a facility to start a reservation."
             />
           ) : (
             <div className="compact-list">
@@ -134,7 +141,7 @@ export function DashboardPage() {
               <Building2 size={18} />
               <div>
                 <strong>Find a facility</strong>
-                <small>Jelajahi fasilitas kantor</small>
+                <small>Explore office facilities</small>
               </div>
               <ChevronRight size={15} />
             </a>
@@ -142,7 +149,7 @@ export function DashboardPage() {
               <Clock3 size={18} />
               <div>
                 <strong>Availability calendar</strong>
-                <small>Lihat jadwal pemesanan</small>
+                <small>View booking schedule</small>
               </div>
               <ChevronRight size={15} />
             </a>
@@ -151,7 +158,7 @@ export function DashboardPage() {
                 <ClipboardCheck size={18} />
                 <div>
                   <strong>Approval queue</strong>
-                  <small>Tinjau permintaan karyawan</small>
+                  <small>Review employee requests</small>
                 </div>
                 <ChevronRight size={15} />
               </a>

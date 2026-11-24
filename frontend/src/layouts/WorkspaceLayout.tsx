@@ -39,16 +39,18 @@ export function WorkspaceLayout() {
   const { user, loading, logout } = useAuth();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [open, setOpen] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const [dark, setDark] = useState(() => localStorage.getItem("orbs-theme") === "dark");
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
-    document.documentElement.style.backgroundColor = dark ? "#0e1522" : "#f7f9fc";
+    document.documentElement.style.backgroundColor = dark ? "#0d1715" : "#f7faf9";
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
   }, [dark]);
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-  if (loading) return <Loading label="Memeriksa sesi…" />;
+  if (loading) return <Loading label="Checking session…" />;
   if (!user) return <Navigate to="/" />;
   if (user.mustChangePassword && pathname !== "/profile") {
     return <Navigate to="/profile" />;
@@ -64,6 +66,14 @@ export function WorkspaceLayout() {
     setDark(next);
     localStorage.setItem("orbs-theme", next ? "dark" : "light");
     document.documentElement.dataset.theme = next ? "dark" : "light";
+  };
+  const handleSignout = async () => {
+    setExiting(true);
+    try {
+      await logout();
+    } finally {
+      window.location.href = "/";
+    }
   };
   return (
     <div className="workspace-shell">
@@ -142,7 +152,7 @@ export function WorkspaceLayout() {
               className="icon-btn"
               title="Sign out"
               aria-label="Sign out"
-              onClick={() => void logout()}
+              onClick={() => setShowExitModal(true)}
             >
               <LogOut size={18} />
             </button>
@@ -152,6 +162,48 @@ export function WorkspaceLayout() {
           <Outlet />
         </main>
       </div>
+      {showExitModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => !exiting && setShowExitModal(false)}
+        >
+          <div
+            className="modal-dialog"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-signout-title"
+          >
+            <div className="modal-header">
+              <div className="modal-icon-wrap danger">
+                <LogOut size={20} />
+              </div>
+              <div className="modal-title-group">
+                <h3 id="modal-signout-title">Sign Out Confirmation</h3>
+                <p>Are you sure you want to sign out of your account?</p>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="button secondary"
+                disabled={exiting}
+                onClick={() => setShowExitModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="button danger"
+                disabled={exiting}
+                onClick={() => void handleSignout()}
+              >
+                {exiting ? "Signing out…" : "Sign out"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <nav
         className="mobile-bottom-nav"
         aria-label="Mobile navigation"

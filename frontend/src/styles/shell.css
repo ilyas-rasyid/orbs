@@ -42,7 +42,7 @@
   height: 35px;
   display: grid;
   place-items: center;
-  background: #2458b8;
+  background: var(--primary);
   color: #fff;
   font-size: 20px;
   font-weight: 800;

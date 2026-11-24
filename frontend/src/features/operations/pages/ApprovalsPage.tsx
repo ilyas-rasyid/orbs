@@ -20,7 +20,7 @@ export function ApprovalsPage() {
     <>
       <PageHeader
         title="Approval queue"
-        description="Tinjau permintaan fasilitas yang memerlukan keputusan manajer."
+        description="Review facility requests requiring managerial decision."
       />
       <Panel title="Pending requests">
         {query.isPending ? (
@@ -30,7 +30,7 @@ export function ApprovalsPage() {
         ) : query.data.length === 0 ? (
           <Empty
             title="No pending approvals"
-            description="Semua permintaan yang masuk telah diproses."
+            description="All incoming requests have been processed."
           />
         ) : (
           <div className="table-scroll">

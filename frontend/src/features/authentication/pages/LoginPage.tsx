@@ -1,7 +1,6 @@
 import { useLogin } from "../hooks/useLogin";
 import type { FormEvent } from "react";
 import { Navigate } from "@tanstack/react-router";
-import { ArrowRight, LockKeyhole, ShieldCheck } from "lucide-react";
 import { api } from "../../../shared/api/client";
 import { ActionError, Field, Loading } from "../../../shared/components/ui";
 
@@ -19,7 +18,7 @@ export function LoginPage() {
     error,
     setError,
   } = useLogin();
-  if (loading) return <Loading label="Memeriksa sesi…" />;
+  if (loading) return <Loading label="Checking session…" />;
   if (user) return <Navigate to="/dashboard" />;
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -49,13 +48,10 @@ export function LoginPage() {
             One clear schedule.
           </h1>
           <p>
-            Ruang meeting, kendaraan dan peralatan kantor, dikelola dari satu workspace yang mudah
-            diandalkan.
+            Meeting rooms, operational vehicles, and office equipment, managed from one dependable
+            workspace.
           </p>
-          <div className="login-feature">
-            <ShieldCheck size={18} />
-            <span>Secure, permission-aware internal workspace</span>
-          </div>
+
         </div>
         <div className="login-footer">Office Resource Booking System</div>
       </aside>
@@ -67,19 +63,17 @@ export function LoginPage() {
           <div className="login-mobile-brand">
             <span className="brand-emblem">O</span> ORBS
           </div>
-          <div className="login-icon">
-            <LockKeyhole size={23} />
-          </div>
           <h2>Welcome back</h2>
-          <p>Masuk dengan akun karyawan untuk mengakses workspace.</p>
+          <p>Sign in with your employee account to access the workspace.</p>
           <div className="form-stack">
-            <Field label="Email kantor">
+            <Field label="Work email">
               <input
                 type="email"
+                aria-label="Email kantor"
                 autoComplete="username"
                 required
                 value={email}
-                placeholder="employee@company.com"
+                placeholder="employee@northstar.example"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Field>
@@ -89,7 +83,7 @@ export function LoginPage() {
                 autoComplete="current-password"
                 required
                 value={password}
-                placeholder="Masukkan password"
+                placeholder="Enter password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Field>
@@ -100,16 +94,10 @@ export function LoginPage() {
             disabled={busy}
             type="submit"
           >
-            {busy ? (
-              "Memverifikasi…"
-            ) : (
-              <>
-                Sign in <ArrowRight size={17} />
-              </>
-            )}
+            {busy ? "Signing in…" : "Sign in"}
           </button>
           <small className="login-note">
-            Akses hanya untuk pengguna yang terdaftar. Hubungi Admin jika memerlukan akun.
+            Access is restricted to authorized employees. Contact Admin if you need an account.
           </small>
         </form>
       </main>

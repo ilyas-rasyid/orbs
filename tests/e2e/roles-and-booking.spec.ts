@@ -107,6 +107,10 @@ test("employee requests equipment, manager approves, hands over, and completes r
   expect(detailHref).toBeTruthy();
 
   await page.getByRole("button", { name: "Sign out" }).click();
+  const confirmSignout = page.getByRole("button", { name: "Sign out" }).last();
+  if (await confirmSignout.isVisible()) {
+    await confirmSignout.click();
+  }
   await signIn(page, loginAccounts.manager);
   await page.goto(detailHref!);
 

@@ -18,7 +18,7 @@ export function NotificationsPage() {
     <>
       <PageHeader
         title="Notifications"
-        description="Pemberitahuan mengenai permintaan dan perubahan status fasilitas."
+        description="Updates regarding your facility requests and status changes."
       />
       <Panel>
         {list.isPending ? (
@@ -26,7 +26,7 @@ export function NotificationsPage() {
         ) : list.isError ? (
           <ErrorNotice error={list.error} />
         ) : list.data.length === 0 ? (
-          <Empty title="Belum ada notifikasi" />
+          <Empty title="No notifications yet" />
         ) : (
           <div className="compact-list">
             {list.data.map((n) => (
