@@ -63,12 +63,6 @@ export function CalendarPage() {
           >
             <ChevronLeft size={18} />
           </button>
-          <button
-            className="button small secondary"
-            onClick={() => setDate(new Date())}
-          >
-            Today
-          </button>
           <strong>
             {displayDate(from)} — {displayDate(to)}
           </strong>
@@ -80,16 +74,24 @@ export function CalendarPage() {
             <ChevronRight size={18} />
           </button>
         </div>
-        <div className="segmented">
-          {(["day", "week", "month"] as const).map((item) => (
-            <button
-              key={item}
-              className={view === item ? "active" : ""}
-              onClick={() => setView(item)}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="calendar-views">
+          <button
+            className="button small secondary"
+            onClick={() => setDate(new Date())}
+          >
+            Today
+          </button>
+          <div className="segmented">
+            {(["day", "week", "month"] as const).map((item) => (
+              <button
+                key={item}
+                className={view === item ? "active" : ""}
+                onClick={() => setView(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       <Panel>
