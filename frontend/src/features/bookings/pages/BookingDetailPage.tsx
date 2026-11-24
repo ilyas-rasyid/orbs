@@ -1,9 +1,8 @@
+import { bookingApi } from "../services/booking.api";
 import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import { ActionError, Loading, PageHeader, Panel } from "../../../shared/components/ui";
-import type { Booking } from "../../../shared/types/domain";
 import { BookingActions } from "../components/BookingActions";
 import { BookingOverview, BookingUsageHistory } from "../components/BookingOverview";
 
@@ -11,7 +10,7 @@ export function BookingDetailPage() {
   const { bookingId } = useParams({ from: "/_app/bookings/$bookingId" });
   const query = useQuery({
     queryKey: ["booking", bookingId],
-    queryFn: () => api.get<Booking>(`/bookings/${bookingId}`),
+    queryFn: () => bookingApi.detail(bookingId),
   });
 
   if (query.isPending) return <Loading />;

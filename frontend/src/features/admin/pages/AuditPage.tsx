@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../shared/api/client";
 import { ActionError, Empty, Loading, PageHeader, Panel } from "../../../shared/components/ui";
 import { displayDate, displayTime } from "../../../shared/utils/dates";
+
 type Audit = {
   id: string;
   action: string;

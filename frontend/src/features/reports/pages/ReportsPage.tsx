@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useReports } from "../hooks/useReports";
 import { Download } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   ActionError,
   DateInput,
@@ -11,7 +9,7 @@ import {
   PageHeader,
   Panel,
 } from "../../../shared/components/ui";
-import { localDatetime, toIso, nextCalendarDate } from "../../../shared/utils/dates";
+
 const reports = [
   ["bookings", "Booking summary"],
   ["facility-utilization", "Facility utilization"],
@@ -22,36 +20,8 @@ const reports = [
   ["overdue-no-show", "Overdue & no-show"],
   ["maintenance", "Maintenance"],
 ];
-type Report = {
-  rows: Record<string, string | number | null>[];
-  summary?: {
-    total: number;
-    completed: number;
-    scheduledHours: number;
-    actualHours: number;
-    vehicleDistance: number;
-  };
-};
 export function ReportsPage() {
-  const [type, setType] = useState("bookings");
-  const [from, setFrom] = useState(
-    localDatetime(new Date(Date.now() - 30 * 86400_000)).slice(0, 10),
-  );
-  const [to, setTo] = useState(localDatetime(new Date()).slice(0, 10));
-  const [error, setError] = useState<unknown>(null);
-  const queryString = `from=${encodeURIComponent(toIso(`${from}T00:00`))}&to=${encodeURIComponent(toIso(`${nextCalendarDate(to)}T00:00`))}`;
-  const result = useQuery({
-    queryKey: ["reports", type, from, to],
-    queryFn: () => api.get<Report>(`/reports/${type}?${queryString}`),
-  });
-  const download = async () => {
-    setError(null);
-    try {
-      await api.downloadCsv(`/reports/${type}/export?${queryString}`);
-    } catch (caught) {
-      setError(caught);
-    }
-  };
+  const { type, setType, from, setFrom, to, setTo, error, result, download } = useReports();
   return (
     <>
       <PageHeader

@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useFacilities } from "../hooks/useFacilities";
 import { Building2, CarFront, Projector, ArrowUpRight, Search } from "lucide-react";
-import { api } from "../../../shared/api/client";
-import { useAuth } from "../../../shared/auth/AuthProvider";
 import {
   PageHeader,
   ErrorNotice,
@@ -10,32 +7,21 @@ import {
   Empty,
   StatusBadge,
 } from "../../../shared/components/ui";
-import type { ApiList, Facility, Category, Location } from "../../../shared/types/domain";
+
 const icons = { MEETING_ROOM: Building2, VEHICLE: CarFront, EQUIPMENT: Projector };
 export function FacilitiesPage() {
-  const { user } = useAuth();
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [location, setLocation] = useState("");
-  const categories = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => api.get<Category[]>("/facility-categories"),
-    staleTime: 300_000,
-  });
-  const locations = useQuery({
-    queryKey: ["locations"],
-    queryFn: () => api.get<Location[]>("/locations"),
-    staleTime: 300_000,
-  });
-  const params = new URLSearchParams({ limit: "100" });
-  if (search) params.set("search", search);
-  if (category) params.set("category", category);
-  if (location) params.set("locationId", location);
-  const facilities = useQuery({
-    queryKey: ["facilities", category, location, search],
-    queryFn: () => api.get<ApiList<Facility>>(`/facilities?${params}`),
-    staleTime: 60_000,
-  });
+  const {
+    user,
+    search,
+    setSearch,
+    category,
+    setCategory,
+    location,
+    setLocation,
+    categories,
+    locations,
+    facilities,
+  } = useFacilities();
   return (
     <>
       <PageHeader

@@ -1,6 +1,6 @@
+import { operationsApi } from "../services/operations.api";
 import { useQuery } from "@tanstack/react-query";
 import { ClipboardCheck } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   PageHeader,
   Panel,
@@ -9,12 +9,12 @@ import {
   ErrorNotice,
   StatusBadge,
 } from "../../../shared/components/ui";
-import type { Booking } from "../../../shared/types/domain";
 import { displayRange } from "../../../shared/utils/dates";
+
 export function ApprovalsPage() {
   const query = useQuery({
     queryKey: ["operations", "approvals"],
-    queryFn: () => api.get<Booking[]>("/operations/approvals"),
+    queryFn: () => operationsApi.approvals(),
   });
   return (
     <>

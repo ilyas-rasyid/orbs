@@ -24,6 +24,7 @@
     "audit:cycles": "node scripts/audit-circular-dependencies.mjs",
     "audit:workspaces": "node scripts/audit-workspace-boundaries.mjs",
     "audit:architecture": "bun run audit:files && bun run audit:types && bun run audit:boundaries && bun run audit:cycles && bun run audit:workspaces",
+    "check:structure": "bun run audit:architecture",
     "test": "bun run --sequential --filter '@orbs/*' test && node --test scripts/tests/*.test.mjs",
     "test:foundation": "bun run test && bun run db:check",
     "db:up": "docker compose --env-file .env up -d --wait postgres",

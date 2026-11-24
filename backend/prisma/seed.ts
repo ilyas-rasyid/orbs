@@ -75,7 +75,7 @@ try {
     await prisma.user.upsert({
       where: { email: account.email },
       create: { ...account, passwordHash },
-      update: {},
+      update: { passwordHash, role: account.role, name: account.name },
     });
   const meeting = await prisma.facilityCategory.findUniqueOrThrow({
     where: { code: "MEETING_ROOM" },

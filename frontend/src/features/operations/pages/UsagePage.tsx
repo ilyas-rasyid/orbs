@@ -1,6 +1,6 @@
+import { operationsApi } from "../services/operations.api";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeftRight, ChevronRight, AlertTriangle } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   PageHeader,
   Panel,
@@ -11,16 +11,17 @@ import {
 } from "../../../shared/components/ui";
 import { displayRange, displayDate } from "../../../shared/utils/dates";
 import type { Booking } from "../../../shared/types/domain";
+
 type Active = { id: string; bookingId: string; startAt: string; booking: Booking };
 export function UsagePage() {
   const active = useQuery({
     queryKey: ["operations", "usage"],
-    queryFn: () => api.get<Active[]>("/operations/usage"),
+    queryFn: () => operationsApi.usage<Active[]>(),
     refetchInterval: 60_000,
   });
   const queue = useQuery({
     queryKey: ["operations", "handover"],
-    queryFn: () => api.get<Booking[]>("/operations/handover-queue"),
+    queryFn: () => operationsApi.handoverQueue(),
     refetchInterval: 60_000,
   });
   return (

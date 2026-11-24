@@ -1,7 +1,7 @@
+import { bookingApi } from "../services/booking.api";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarPlus, ChevronRight } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   Empty,
   ErrorNotice,
@@ -11,7 +11,7 @@ import {
   StatusBadge,
 } from "../../../shared/components/ui";
 import { displayRange } from "../../../shared/utils/dates";
-import type { Booking, ApiList } from "../../../shared/types/domain";
+
 const statuses = [
   "",
   "PENDING",
@@ -27,8 +27,7 @@ export function BookingsPage() {
   const [status, setStatus] = useState("");
   const query = useQuery({
     queryKey: ["bookings", status],
-    queryFn: () =>
-      api.get<ApiList<Booking>>(`/bookings?limit=100${status ? `&status=${status}` : ""}`),
+    queryFn: () => bookingApi.list(status),
   });
   return (
     <>

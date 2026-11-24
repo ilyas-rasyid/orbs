@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "../infra/prisma.js";
-import { authenticate, checkOrigin, requireCsrf, type Actor } from "../security/sessions.js";
+import { authenticate, checkOrigin, requireCsrf } from "../security/sessions.js";
+import type { Actor } from "../security/sessions.js";
 import { HttpError, formatError } from "./errors.js";
 
 export type Context = {

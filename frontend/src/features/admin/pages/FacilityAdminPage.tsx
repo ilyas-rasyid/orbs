@@ -1,6 +1,6 @@
+import { facilityAdminApi } from "../services/facility-admin.api";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   ActionError,
   Empty,
@@ -9,11 +9,11 @@ import {
   Panel,
   StatusBadge,
 } from "../../../shared/components/ui";
-import type { Facility } from "../../../shared/types/domain";
+
 export function FacilityAdminPage() {
   const facilities = useQuery({
     queryKey: ["admin", "facilities"],
-    queryFn: () => api.get<Facility[]>("/admin/facilities"),
+    queryFn: () => facilityAdminApi.list(),
   });
   return (
     <>

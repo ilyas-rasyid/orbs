@@ -19,7 +19,10 @@ for (const file of listSourceFiles()) {
     const normalized = resolvedTarget ? relativePath(resolvedTarget) : "";
     const targetFeature = normalized.match(/^(frontend|backend)\/src\/features\/([^/]+)\//);
     const featureName = target?.[1] ?? targetFeature?.[2];
-    const publicEntry = target ? target[2] === "index" : /\/index\.ts(x)?$/.test(normalized);
+    const isDirectFeatureFile =
+      /^(frontend|backend)\/src\/features\/[^/]+\/[^/]+\.(api|select)\.ts$/.test(normalized);
+    const publicEntry =
+      (target ? target[2] === "index" : /\/index\.ts(x)?$/.test(normalized)) || isDirectFeatureFile;
 
     if (sourceFeature && featureName && sourceFeature[2] !== featureName && !publicEntry) {
       failures.push(`${source}: cross-feature deep import ${imported}`);

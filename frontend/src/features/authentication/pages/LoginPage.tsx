@@ -1,15 +1,24 @@
-import { useState, type FormEvent } from "react";
+import { useLogin } from "../hooks/useLogin";
+import type { FormEvent } from "react";
 import { Navigate } from "@tanstack/react-router";
 import { ArrowRight, LockKeyhole, ShieldCheck } from "lucide-react";
 import { api } from "../../../shared/api/client";
-import { useAuth } from "../../../shared/auth/AuthProvider";
 import { ActionError, Field, Loading } from "../../../shared/components/ui";
+
 export function LoginPage() {
-  const { user, loading, refresh } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<unknown>();
+  const {
+    user,
+    loading,
+    refresh,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    busy,
+    setBusy,
+    error,
+    setError,
+  } = useLogin();
   if (loading) return <Loading label="Memeriksa sesi…" />;
   if (user) return <Navigate to="/dashboard" />;
   const submit = async (event: FormEvent) => {

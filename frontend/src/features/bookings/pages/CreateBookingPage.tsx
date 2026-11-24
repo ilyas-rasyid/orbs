@@ -1,11 +1,5 @@
-import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useCreateBooking } from "../hooks/useCreateBooking";
 import { CalendarCheck, ArrowLeft } from "lucide-react";
-import { api } from "../../../shared/api/client";
-import { useAuth } from "../../../shared/auth/AuthProvider";
 import {
   ActionError,
   DateTimeInput,
@@ -15,99 +9,25 @@ import {
   PageHeader,
   Panel,
 } from "../../../shared/components/ui";
-import { localDatetime, toIso } from "../../../shared/utils/dates";
-import type { Booking, Facility, ApiList, User } from "../../../shared/types/domain";
 
-const formSchema = z.object({
-  facilityId: z.string().min(1, "Pilih fasilitas"),
-  startAt: z.string().min(1),
-  endAt: z.string().min(1),
-  purpose: z.string().trim().min(3, "Isi tujuan minimal 3 karakter"),
-  responsibleUserId: z.string().optional(),
-  meetingTitle: z.string().optional(),
-  attendees: z.number().int().min(1).optional(),
-  destination: z.string().optional(),
-  travelPurpose: z.string().optional(),
-  designatedDriverId: z.string().optional(),
-});
-type FormValues = z.infer<typeof formSchema>;
-function defaultTimes() {
-  const start = new Date(Date.now() + 90 * 60_000);
-  start.setMinutes(Math.ceil(start.getMinutes() / 15) * 15, 0, 0);
-  return {
-    startAt: localDatetime(start),
-    endAt: localDatetime(new Date(start.getTime() + 60 * 60_000)),
-  };
-}
 export function CreateBookingPage() {
-  const { user } = useAuth();
-  const preselected = new URLSearchParams(window.location.search).get("facilityId") ?? "";
-  const [done, setDone] = useState<Booking | null>(null);
-  const [error, setError] = useState<unknown>(null);
-  const [busy, setBusy] = useState(false);
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      ...defaultTimes(),
-      facilityId: preselected,
-      purpose: "",
-      attendees: 1,
-    },
-  });
-  const facilityId = form.watch("facilityId");
-  const facilities = useQuery({
-    queryKey: ["facilities", "select"],
-    queryFn: () => api.get<ApiList<Facility>>("/facilities?limit=100"),
-  });
-  const [responsibleSearch, setResponsibleSearch] = useState("");
-  const responsibleUsers = useQuery({
-    queryKey: ["directory", "responsible", responsibleSearch],
-    queryFn: () =>
-      api.get<User[]>(`/directory/users?search=${encodeURIComponent(responsibleSearch)}`),
-    enabled: user?.role !== "EMPLOYEE" && responsibleSearch.length >= 2,
-  });
-  const [driverSearch, setDriverSearch] = useState("");
-  const drivers = useQuery({
-    queryKey: ["directory", driverSearch],
-    queryFn: () => api.get<User[]>(`/directory/users?search=${encodeURIComponent(driverSearch)}`),
-    enabled: driverSearch.length >= 2,
-  });
-  const facility = useMemo(
-    () => facilities.data?.data.find((item) => item.id === facilityId),
-    [facilities.data, facilityId],
-  );
-  const kind = facility?.category.code;
-  const submit = async (data: FormValues) => {
-    setError(null);
-    setBusy(true);
-    try {
-      const payload = {
-        facilityId: data.facilityId,
-        startAt: toIso(data.startAt),
-        endAt: toIso(data.endAt),
-        purpose: data.purpose,
-        ...(user?.role !== "EMPLOYEE" && data.responsibleUserId
-          ? { responsibleUserId: data.responsibleUserId }
-          : {}),
-        ...(kind === "MEETING_ROOM"
-          ? { meetingTitle: data.meetingTitle, attendees: Number(data.attendees ?? 1) }
-          : {}),
-        ...(kind === "VEHICLE"
-          ? {
-              destination: data.destination,
-              travelPurpose: data.travelPurpose,
-              designatedDriverId: data.designatedDriverId,
-            }
-          : {}),
-      };
-      const result = await api.mutate<Booking>("/bookings", payload);
-      setDone(result);
-    } catch (caught) {
-      setError(caught);
-    } finally {
-      setBusy(false);
-    }
-  };
+  const {
+    user,
+    done,
+    error,
+    busy,
+    form,
+    facilities,
+    responsibleSearch,
+    setResponsibleSearch,
+    responsibleUsers,
+    driverSearch,
+    setDriverSearch,
+    drivers,
+    facility,
+    kind,
+    submit,
+  } = useCreateBooking();
   if (done)
     return (
       <>

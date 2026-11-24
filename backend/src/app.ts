@@ -7,6 +7,7 @@ import { dispatch } from "./http/router.js";
 import { registerAuthenticationRoutes } from "./features/authentication/handler/auth.routes.js";
 import { registerFacilityRoutes } from "./features/facilities/handler/facilities.routes.js";
 import { registerBookingRoutes } from "./features/bookings/handler/booking.routes.js";
+import { registerOperationRoutes } from "./features/operations/handler/operations.routes.js";
 import { registerMaintenanceRoutes } from "./features/maintenance/handler/maintenance.routes.js";
 import { registerAdminRoutes } from "./features/admin/handler/admin.routes.js";
 import { registerNotificationRoutes } from "./features/notifications/handler/notification.routes.js";
@@ -18,6 +19,7 @@ function registerDomainRoutes() {
   registerAuthenticationRoutes();
   registerFacilityRoutes();
   registerBookingRoutes();
+  registerOperationRoutes();
   registerMaintenanceRoutes();
   registerAdminRoutes();
   registerNotificationRoutes();

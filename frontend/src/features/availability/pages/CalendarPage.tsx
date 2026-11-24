@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useAvailabilityCalendar } from "../hooks/useAvailabilityCalendar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   Empty,
   ErrorNotice,
@@ -11,37 +9,22 @@ import {
   StatusBadge,
 } from "../../../shared/components/ui";
 import { displayDate, displayTime, currentTimezone } from "../../../shared/utils/dates";
-import type { ApiList, CalendarData, Facility } from "../../../shared/types/domain";
-type View = "day" | "week" | "month";
+
 export function CalendarPage() {
-  const selected = new URLSearchParams(window.location.search).get("facilityId") ?? "";
-  const [facilityId, setFacilityId] = useState(selected);
-  const [date, setDate] = useState(new Date());
-  const [view, setView] = useState<View>("week");
-  const facilities = useQuery({
-    queryKey: ["facilities", "calendar-options"],
-    queryFn: () => api.get<ApiList<Facility>>("/facilities?limit=100"),
-  });
-  const from = new Date(date);
-  from.setHours(0, 0, 0, 0);
-  const duration = view === "day" ? 1 : view === "week" ? 7 : 30;
-  const to = new Date(from.getTime() + duration * 86400_000);
-  const path =
-    `/availability?from=${encodeURIComponent(from.toISOString())}&to=${encodeURIComponent(to.toISOString())}` +
-    (facilityId ? `&facilityIds=${facilityId}` : "");
-  const calendar = useQuery({
-    queryKey: ["availability", view, date.toDateString(), facilityId],
-    queryFn: () => api.get<CalendarData>(path),
-    staleTime: 15_000,
-  });
-  const move = (direction: number) =>
-    setDate((old) => new Date(old.getTime() + direction * duration * 86400_000));
-  const getName = (id: string) =>
-    facilities.data?.data.find((f) => f.id === id)?.name ?? "Facility";
-  const days = Array.from(
-    { length: duration },
-    (_, index) => new Date(from.getTime() + index * 86400_000),
-  );
+  const {
+    facilityId,
+    setFacilityId,
+    setDate,
+    view,
+    setView,
+    facilities,
+    from,
+    to,
+    calendar,
+    move,
+    getName,
+    days,
+  } = useAvailabilityCalendar();
   return (
     <>
       <PageHeader

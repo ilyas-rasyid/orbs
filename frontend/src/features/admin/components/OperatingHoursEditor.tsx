@@ -1,6 +1,5 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { api } from "../../../shared/api/client";
+import type { OperatingWindow } from "../types/operating-window.types";
+import { useOperatingHours } from "../hooks/useOperatingHours";
 import {
   ActionError,
   Empty,
@@ -13,77 +12,11 @@ import {
 } from "../../../shared/components/ui";
 import type { Facility } from "../../../shared/types/domain";
 
-type OperatingWindow = {
-  id?: string;
-  dayOfWeek: number;
-  opens: string;
-  closes: string;
-  kind: "BOOKING" | "HANDOVER" | "RETURN";
-};
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export function OperatingHoursEditor({ facility }: { facility: Facility }) {
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ["operating-windows", facility.id],
-    queryFn: () => api.get<OperatingWindow[]>(`/facilities/${facility.id}/operating-windows`),
-  });
-  const [windows, setWindows] = useState<OperatingWindow[]>([]);
-  const [error, setError] = useState<unknown>(null);
-  const [success, setSuccess] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    if (query.data) setWindows(query.data);
-  }, [query.data]);
-
-  function addWindow() {
-    setWindows((items) => [
-      ...items,
-      {
-        dayOfWeek: 1,
-        opens: "08:00",
-        closes: "18:00",
-        kind: facility.category.code === "MEETING_ROOM" ? "BOOKING" : "HANDOVER",
-      },
-    ]);
-  }
-
-  function changeWindow(index: number, patch: Partial<OperatingWindow>) {
-    setWindows((items) => items.map((item, i) => (i === index ? { ...item, ...patch } : item)));
-  }
-
-  async function save(event: FormEvent) {
-    event.preventDefault();
-    setBusy(true);
-    setError(null);
-    setSuccess("");
-    try {
-      await api.mutate(
-        `/admin/facilities/${facility.id}/operating-windows`,
-        {
-          windows: windows.map(({ dayOfWeek, opens, closes, kind }) => ({
-            dayOfWeek,
-            opens,
-            closes,
-            kind,
-          })),
-        },
-        { method: "PUT", version: facility.version },
-      );
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["operating-windows", facility.id] }),
-        queryClient.invalidateQueries({ queryKey: ["admin", "facility", facility.id] }),
-        queryClient.invalidateQueries({ queryKey: ["facilities"] }),
-      ]);
-      setSuccess("Operating hours updated.");
-    } catch (caught) {
-      setError(caught);
-    } finally {
-      setBusy(false);
-    }
-  }
-
+  const { query, windows, setWindows, error, success, busy, addWindow, changeWindow, save } =
+    useOperatingHours({ facility });
   return (
     <Panel title="Operating hours">
       {query.isPending ? (

@@ -1,7 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useUsers } from "../hooks/useUsers";
 import { Plus, UserRoundCog } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   ActionError,
   Empty,
@@ -12,42 +10,26 @@ import {
   Panel,
   StatusBadge,
 } from "../../../shared/components/ui";
-import type { ApiList, User } from "../../../shared/types/domain";
+
 export function UsersPage() {
-  const client = useQueryClient();
-  const [createOpen, setCreateOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [role, setRole] = useState("EMPLOYEE");
-  const [error, setError] = useState<unknown>(null);
-  const [busy, setBusy] = useState(false);
-  const [password, setPassword] = useState("");
-  const users = useQuery({
-    queryKey: ["admin", "users"],
-    queryFn: () => api.get<ApiList<User>>("/admin/users?limit=100"),
-  });
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-    setError(null);
-    setBusy(true);
-    setPassword("");
-    try {
-      const result = await api.mutate<{ temporaryPassword: string }>("/admin/users", {
-        name,
-        email,
-        employeeCode: code,
-        role,
-      });
-      setPassword(result.temporaryPassword);
-      setCreateOpen(false);
-      await client.invalidateQueries({ queryKey: ["admin", "users"] });
-    } catch (caught) {
-      setError(caught);
-    } finally {
-      setBusy(false);
-    }
-  };
+  const {
+    createOpen,
+    setCreateOpen,
+    name,
+    setName,
+    email,
+    setEmail,
+    code,
+    setCode,
+    role,
+    setRole,
+    error,
+    busy,
+    password,
+    setPassword,
+    users,
+    submit,
+  } = useUsers();
   return (
     <>
       <PageHeader

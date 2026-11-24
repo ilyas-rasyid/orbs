@@ -1,7 +1,7 @@
+import { facilitiesApi } from "../facilities.api";
 import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarPlus, MapPin, ShieldCheck, Clock3 } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import {
   ErrorNotice,
   Loading,
@@ -9,12 +9,12 @@ import {
   Panel,
   StatusBadge,
 } from "../../../shared/components/ui";
-import type { Facility } from "../../../shared/types/domain";
+
 export function FacilityDetailPage() {
   const { facilityId } = useParams({ from: "/_app/facilities/$facilityId" });
   const query = useQuery({
     queryKey: ["facility", facilityId],
-    queryFn: () => api.get<Facility>(`/facilities/${facilityId}`),
+    queryFn: () => facilitiesApi.detail(facilityId),
   });
   if (query.isPending) return <Loading />;
   if (query.isError) return <ErrorNotice error={query.error} />;

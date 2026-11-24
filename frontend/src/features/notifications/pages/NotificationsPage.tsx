@@ -1,17 +1,17 @@
+import { notificationsApi } from "../services/notifications.api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell } from "lucide-react";
-import { api } from "../../../shared/api/client";
 import { PageHeader, Panel, Empty, ErrorNotice, Loading } from "../../../shared/components/ui";
-import type { Notification } from "../../../shared/types/domain";
 import { displayDate, displayTime } from "../../../shared/utils/dates";
+
 export function NotificationsPage() {
   const client = useQueryClient();
   const list = useQuery({
     queryKey: ["notifications"],
-    queryFn: () => api.get<Notification[]>("/notifications"),
+    queryFn: () => notificationsApi.list(),
   });
   const read = async (id: string) => {
-    await api.mutate(`/notifications/${id}/read`);
+    await notificationsApi.read(id);
     await client.invalidateQueries({ queryKey: ["notifications"] });
   };
   return (
