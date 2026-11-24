@@ -19,7 +19,7 @@ export function FacilityAdminPage() {
     <>
       <PageHeader
         title="Facility management"
-        description="Pengaturan identitas, kebijakan, dan status fasilitas perusahaan."
+        description="Manage facility profiles, reservation policies, and operational statuses."
         action={
           <a
             className="button primary"

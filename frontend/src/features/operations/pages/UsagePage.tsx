@@ -28,7 +28,7 @@ export function UsagePage() {
     <>
       <PageHeader
         title="Handover & return"
-        description="Pantau penggunaan fasilitas aktual dan proses serah terima kendaraan atau peralatan."
+        description="Monitor active facility usage and the handover process for vehicles and equipment."
       />
       <div className="stacked-panels">
         <Panel title="Currently in use">
@@ -37,7 +37,7 @@ export function UsagePage() {
           ) : active.isError ? (
             <ErrorNotice error={active.error} />
           ) : active.data.length === 0 ? (
-            <Empty title="Tidak ada fasilitas sedang digunakan" />
+            <Empty title="No facilities currently in use" />
           ) : (
             <div className="compact-list">
               {active.data.map((session) => {

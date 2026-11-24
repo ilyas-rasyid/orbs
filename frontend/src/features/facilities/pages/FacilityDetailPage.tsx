@@ -112,12 +112,12 @@ export function FacilityDetailPage() {
         <Panel title="Booking information">
           <div className="info-stack">
             <p>
-              Pastikan waktu pemesanan dan kebutuhanmu sudah sesuai sebelum mengirim permintaan.
+              Please make sure your booking schedule and requirements are accurate before submitting a request.
             </p>
             <p>
               {facility.approvalPolicy === "AUTO_CONFIRM"
-                ? "Booking bisa langsung dikonfirmasi jika slot masih tersedia."
-                : "Permintaan perlu disetujui Facility Manager sebelum fasilitas dapat digunakan."}
+                ? "Bookings will be confirmed automatically if the selected slot is available."
+                : "Requests require approval from a Facility Manager before the facility can be used."}
             </p>
             <a
               className="button secondary"

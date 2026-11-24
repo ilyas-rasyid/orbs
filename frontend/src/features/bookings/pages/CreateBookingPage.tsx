@@ -67,7 +67,7 @@ export function CreateBookingPage() {
     <>
       <PageHeader
         title="New booking"
-        description="Lengkapi kebutuhan penggunaan fasilitas dan periksa jadwal sebelum mengirim."
+        description="Provide your reservation details and check schedules before submitting."
         action={
           <a
             href="/bookings"
@@ -136,7 +136,7 @@ export function CreateBookingPage() {
                   rows={2}
                   {...form.register("purpose")}
                   required
-                  placeholder="Untuk keperluan apa fasilitas digunakan?"
+                  placeholder="What is the purpose of this reservation?"
                 />
               </Field>
             </div>

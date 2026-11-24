@@ -33,7 +33,7 @@ export function StatusBadge({ status }: { status: string }) {
         : "plain";
   return <span className={`status-badge ${cls}`}>{statusLabel(status)}</span>;
 }
-export function Loading({ label = "Memuat data…" }: { label?: string }) {
+export function Loading({ label = "Loading data…" }: { label?: string }) {
   return (
     <div className="state-center">
       <LoaderCircle
@@ -150,7 +150,7 @@ export function ActionError({ error }: { error: unknown }) {
 }
 export function FormActions({
   busy,
-  text = "Simpan",
+  text = "Save",
   cancelHref,
 }: {
   busy: boolean;
@@ -164,7 +164,7 @@ export function FormActions({
           className="button secondary"
           href={cancelHref}
         >
-          Batal
+          Cancel
         </a>
       )}
       <button
@@ -172,7 +172,7 @@ export function FormActions({
         type="submit"
         disabled={busy}
       >
-        {busy ? "Memproses…" : text}
+        {busy ? "Saving…" : text}
       </button>
     </div>
   );

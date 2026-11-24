@@ -52,7 +52,7 @@ export function FacilityEditor({ initial }: { initial?: Facility | undefined }) 
     <>
       <PageHeader
         title={initial ? `Edit ${initial.name}` : "New facility"}
-        description="Atur profil fasilitas dan kebijakan pemesanan secara konsisten."
+        description="Manage facility profile and reservation policies consistently."
         action={
           <a
             className="button secondary"

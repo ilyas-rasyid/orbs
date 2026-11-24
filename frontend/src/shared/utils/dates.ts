@@ -26,7 +26,7 @@ function localParts(date: Date): Record<string, string> {
 }
 
 export function displayDate(date: string | Date, options: Intl.DateTimeFormatOptions = {}) {
-  return new Intl.DateTimeFormat("id-ID", {
+  return new Intl.DateTimeFormat("en-US", {
     timeZone: organizationTimezone,
     day: "2-digit",
     month: "short",
@@ -36,7 +36,7 @@ export function displayDate(date: string | Date, options: Intl.DateTimeFormatOpt
 }
 
 export function displayTime(date: string | Date) {
-  return new Intl.DateTimeFormat("id-ID", {
+  return new Intl.DateTimeFormat("en-US", {
     timeZone: organizationTimezone,
     hour: "2-digit",
     minute: "2-digit",

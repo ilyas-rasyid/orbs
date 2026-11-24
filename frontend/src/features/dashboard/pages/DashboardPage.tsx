@@ -1,9 +1,7 @@
-import type { ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   CalendarPlus,
   ChevronRight,
-  CircleCheck,
   Clock3,
   ClipboardCheck,
   Building2,
@@ -72,25 +70,21 @@ export function DashboardPage() {
           <Metric
             label="Pending requests"
             value={stats.data.pending}
-            icon={<Clock3 size={19} />}
             href="/bookings"
           />
           <Metric
             label="Confirmed"
             value={stats.data.confirmed}
-            icon={<ClipboardCheck size={19} />}
             href="/bookings"
           />
           <Metric
             label="In use"
             value={stats.data.active}
-            icon={<Building2 size={19} />}
             href="/bookings"
           />
           <Metric
             label="Completed"
             value={stats.data.completed}
-            icon={<CircleCheck size={19} />}
             href="/bookings"
           />
         </div>
@@ -172,12 +166,10 @@ export function DashboardPage() {
 function Metric({
   label,
   value,
-  icon,
   href,
 }: {
   label: string;
   value: number;
-  icon: ReactNode;
   href: string;
 }) {
   return (
@@ -185,9 +177,8 @@ function Metric({
       className="metric"
       href={href}
     >
-      <div className="metric-icon">{icon}</div>
       <span>{label}</span>
-      <strong>{value.toLocaleString("id-ID")}</strong>
+      <strong>{value.toLocaleString("en-US")}</strong>
     </a>
   );
 }

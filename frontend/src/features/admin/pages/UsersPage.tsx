@@ -34,7 +34,7 @@ export function UsersPage() {
     <>
       <PageHeader
         title="Users"
-        description="Manajemen akun internal, role, dan akses pengguna."
+        description="Manage internal accounts, roles, and employee access permissions."
         action={
           <button
             className="button primary"

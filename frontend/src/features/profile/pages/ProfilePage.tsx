@@ -25,7 +25,7 @@ export function ProfilePage() {
     <>
       <PageHeader
         title="My profile"
-        description="Informasi akun dan pengaturan keamanan personal."
+        description="Account information and personal security settings."
       />
       <div className="detail-columns">
         <Panel title="Identity">

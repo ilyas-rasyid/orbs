@@ -29,7 +29,7 @@ export function CalendarPage() {
     <>
       <PageHeader
         title="Availability calendar"
-        description="Lihat reservasi terkonfirmasi dan jadwal maintenance berdasarkan waktu organisasi."
+        description="View confirmed reservations and maintenance schedules based on organization time."
         action={
           <a
             href={facilityId ? `/bookings/new?facilityId=${facilityId}` : "/bookings/new"}

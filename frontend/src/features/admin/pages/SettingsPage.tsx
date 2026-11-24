@@ -15,7 +15,7 @@ export function SettingsPage() {
     <>
       <PageHeader
         title="Organization settings"
-        description="Atur kebijakan organisasi dan master lokasi."
+        description="Configure organization policies and office locations."
       />
       <div className="detail-columns">
         <SettingsEditor

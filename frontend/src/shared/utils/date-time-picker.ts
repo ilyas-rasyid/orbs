@@ -48,7 +48,7 @@ export function formatReadableDate(dateIso: string): string {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateIso)) return "Select date";
   const [y = 2026, m = 1, d = 1] = dateIso.split("-").map(Number);
   const date = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
-  return new Intl.DateTimeFormat("id-ID", {
+  return new Intl.DateTimeFormat("en-US", {
     timeZone: "UTC",
     day: "2-digit",
     month: "short",

@@ -84,8 +84,8 @@ export function FacilitiesPage() {
         <ErrorNotice error={facilities.error} />
       ) : facilities.data.data.length === 0 ? (
         <Empty
-          title="Tidak ada fasilitas sesuai filter"
-          description="Coba kata kunci atau kategori lain."
+          title="No facilities found"
+          description="Try different keywords or category filters."
         />
       ) : (
         <>
